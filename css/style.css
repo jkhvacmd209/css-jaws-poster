@@ -1,0 +1,728 @@
+/* --- FONTS --- */
+
+@font-face {
+	font-family: "Amity Jack";
+	src: local("Amity Jack"),
+		url("../fonts/amity-jack.woff2");
+}
+
+
+/* CUSTOM PROPERTIES */
+:root {
+	--mondAnimatieSpeed: 3s;
+	--zwemmenAnimatieSpeed: 1s;
+	--waterAnimatieSpeed: 20s;
+
+	--haai-kleur: rgb(60, 100, 125);
+	--kaak-onder-kleur: rgb(130, 170, 205);
+	--kaak-boven-kleur: rgb(130, 170, 205);
+	--haai-schaduw: radial-gradient(circle at 0% 20%, transparent 30%, black 70%);
+	--haai-outline: drop-shadow(-.5em 0 1em #fff3) drop-shadow(0 0 .5em #fff5) drop-shadow(-.1em 0 .05em white);
+	--persoon-kleur: rgb(200, 160, 130);
+	--water-gradient: linear-gradient(to bottom, rgb(74, 154, 190), rgb(30, 120, 160));
+	--lucht-kleur: white;
+}
+
+
+/* --- ALGEMENE STYLES */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	/*	outline: 1px solid yellow;*/
+}
+
+body {
+	width: 100%;
+	height: 100vh;
+
+	background-color: rgb(23, 27, 57);
+}
+
+
+
+/* --- CONTAINERS --- */
+
+/* Alles in het midden met max breedte */
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+
+	margin: auto;
+	padding: 1em 0;
+	width: 90%;
+	max-width: 80vh;
+	height: 100%;
+}
+
+/* Container voor de animatie */
+.animatie {
+	position: relative;
+
+	display: grid;
+	justify-items: center;
+	flex-grow: 1;
+
+	width: 100%;
+	border: 5px solid white;
+	overflow: hidden;
+
+	background-color: var(--lucht-kleur);
+}
+
+
+
+/* --- TEXT --- */
+
+h1 {
+	margin-top: 1rem;
+
+	color: red;
+	font-family: Amity Jack, sans-serif;
+	font-size: min(20vw, 9em);
+	text-align: center;
+	font-weight: bold;
+}
+
+.tagline {
+	color: white;
+	font-family: serif;
+	font-size: 2em;
+	font-style: italic;
+	text-align: center;
+}
+
+
+
+/* --- BUTTONS --- */
+
+.buttons {
+	position: fixed;
+	z-index: 100;
+	bottom: 0;
+	right: 0;
+
+	display: flex;
+	gap: 1em;
+
+	padding: 1em;
+}
+
+button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 1.1em;
+	aspect-ratio: 1/1;
+	border: none;
+	overflow: hidden;
+
+	background-color: transparent;
+	font-size: 3em;
+
+	transition: 200ms;
+	cursor: pointer;
+
+	filter: drop-shadow(.1em .1em .2em black);
+}
+
+button:hover {
+	transform: scale(1.1);
+
+	filter: drop-shadow(.2em .2em .2em black);
+}
+
+
+/* --- WATER --- */
+
+.water {
+	position: absolute;
+	inset: 30% 0 0 0;
+
+	background: radial-gradient(circle at 20% 20%, #fff2 0 1em, #fff0 1.1em 100%),
+		radial-gradient(circle at 40% 80%, #fff1 0% 3%, #fff0 4% 100%),
+		radial-gradient(circle at 10% 60%, #fff2 0% .5em, #fff0 .8em 100%),
+		radial-gradient(circle at 50% 50%, #fff1 0% .8em, #fff0 1em 100%),
+		radial-gradient(circle at 80% 80%, #fff2 0 1em, #fff0 1.1em 100%),
+		radial-gradient(circle at 60% 20%, #fff1 0% 3%, #fff0 4% 100%),
+		radial-gradient(circle at 90% 70%, #fff2 0% .5em, #fff0 .8em 100%),
+		radial-gradient(circle at 70% 30%, #fff1 0% .8em, #fff0 1em 100%),
+		var(--water-gradient);
+	background-size: 200% 100%;
+	background-position: 0% 0%;
+
+	animation: var(--waterAnimatieSpeed) water linear infinite;
+
+}
+
+/* Water over de zwemmer */
+.water.overlay {
+	opacity: 50%;
+	z-index: 50;
+}
+
+/* Animatie voor het water */
+
+@keyframes water {
+	from {
+		background-position-x: 0%;
+	}
+
+	to {
+		background-position-x: 200%;
+	}
+}
+
+
+
+/* --- HAAI --- */
+
+/* Styles voor de haai */
+
+/* Container voor de haai*/
+.haai {
+	position: absolute;
+	bottom: -45%;
+	z-index: 100;
+
+	display: grid;
+	justify-items: center;
+
+	height: 80%;
+	aspect-ratio: 1/1;
+
+	filter: var(--haai-outline);
+	animation: var(--mondAnimatieSpeed) haai infinite;
+	animation-fill-mode: both;
+	animation-timing-function: cubic-bezier(.49, .5, .1, 1.38);
+}
+
+/* Schaduw overlay over alles */
+.schaduw {
+	position: absolute;
+	z-index: 999;
+
+	width: 100%;
+	height: 100%;
+	border-radius: 2em 100%;
+	transform: scaleX(.8) rotate(45deg);
+
+	background-image: var(--haai-schaduw);
+}
+
+.haai .lijf {
+	position: absolute;
+	z-index: 100;
+
+	width: 100%;
+	height: 100%;
+	border-radius: 2em 100%;
+	transform: scaleX(.8) rotate(45deg);
+
+	background-color: var(--haai-kleur);
+}
+
+/* Ogen */
+
+.oog {
+	position: absolute;
+	top: 11%;
+
+	width: 1em;
+	aspect-ratio: 2/3;
+	border-radius: 50%;
+
+	background-color: black;
+}
+
+.oog.links {
+	left: 30%;
+
+	rotate: 10deg;
+}
+
+.oog.rechts {
+	right: 30%;
+
+	rotate: -10deg;
+}
+
+/* Kaken */
+
+.kaak {
+	position: absolute;
+	z-index: 120;
+
+	height: 80%;
+	border-radius: 50%;
+
+	transform: scaleX(.6);
+}
+
+.kaak.boven {
+	top: 3%;
+
+	width: 85%;
+
+	background-color: var(--kaak-boven-kleur);
+	filter: blur(.1em);
+}
+
+.kaak.onder {
+	position: absolute;
+	top: 22%;
+
+	width: 48%;
+	height: 100%;
+	box-shadow: inset 0em .5em 1em #fff9;
+
+	background-color: var(--kaak-onder-kleur);
+
+	animation-name: mond;
+	animation-duration: var(--mondAnimatieSpeed);
+	animation-iteration-count: infinite;
+}
+
+/* Ruimte tussen de kaken (bevat de tanden) */
+.mond {
+	position: absolute;
+	z-index: 120;
+	top: 11.5%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 56%;
+	width: 36%;
+	border-radius: 50%;
+	overflow: hidden;
+
+	background-color: black;
+}
+
+/* Tanden */
+
+.tanden.boven {
+	z-index: 2;
+
+	width: 100%;
+	height: 100%;
+
+	filter: drop-shadow(0 0 .5em black);
+}
+
+.tanden.onder {
+	position: absolute;
+	z-index: 1;
+
+	width: 100%;
+	height: 100%;
+
+	animation-name: mond;
+	animation-duration: var(--mondAnimatieSpeed);
+	animation-iteration-count: infinite;
+}
+
+.tand {
+	position: absolute;
+
+	width: 7%;
+	aspect-ratio: 1/2;
+
+	background-image: radial-gradient(circle at 50% 100%, ivory 50%, black);
+
+	clip-path: url(#clipPath);
+}
+
+/* Alle boventanden */
+.tanden.boven .tand {
+	--rot: 18deg;
+
+	top: 0%;
+	left: 46.5%;
+
+	transform-origin: 50% 300%;
+	rotate: calc(var(--rot)*var(--i) + var(--rot)/2);
+}
+
+/* Alle ondertanden */
+.tanden.onder .tand {
+	--rot: 12deg;
+
+	top: 12.5%;
+	left: 46.5%;
+
+	transform: translateY(280%) rotate(calc(var(--rot)*var(--i) + var(--rot)/2)) translateY(-280%) scaleY(-1);
+}
+
+/* Geef index aan tanden */
+.tand:first-of-type {
+	--i: -4;
+}
+
+.tand:nth-of-type(2) {
+	--i: -3;
+}
+
+.tand:nth-of-type(3) {
+	--i: -2;
+}
+
+.tand:nth-of-type(4) {
+	--i: -1;
+}
+
+.tand:nth-of-type(5) {
+	--i: 0;
+}
+
+.tand:nth-of-type(6) {
+	--i: 1;
+}
+
+.tand:nth-of-type(7) {
+	--i: 2;
+}
+
+.tand:nth-of-type(8) {
+	--i: 3;
+}
+
+
+/* Animaties voor de haai */
+
+@keyframes haai {
+	0% {
+		transform: rotate(30deg) translateY(25%) translateX(-40%);
+	}
+
+	5% {
+		transform: rotate(30deg) translateY(15%) translateX(-40%);
+	}
+
+	100% {
+		transform: rotate(30deg) translateY(25%) translateX(-40%);
+	}
+}
+
+/* onderkaak en ondertanden */
+@keyframes mond {
+	0% {
+		transform: none;
+	}
+
+	3% {
+		transform: none;
+	}
+
+	8% {
+		transform: translateY(-3em);
+	}
+
+	28% {
+		transform: none;
+	}
+
+	100% {
+		transform: none;
+	}
+}
+
+
+
+/* --- ZWEMMER --- */
+
+/* Styles voor de zwemmer */
+
+/* Container voor de zwemmer */
+.zwemmer {
+	position: absolute;
+	z-index: 40;
+	top: calc(30% - 12em / 8);
+
+	display: flex;
+	justify-content: end;
+
+	width: 12em;
+	aspect-ratio: 4/1;
+
+	/*	animation: calc(var(--zwemmenAnimatieSpeed)*20) zwemmen linear infinite;*/
+}
+
+.hoofd {
+	rotate: -10deg;
+
+	height: 70%;
+	aspect-ratio: 4/3;
+	border-radius: 100%;
+
+	background-color: var(--persoon-kleur);
+}
+
+.zwemmer .lijf {
+	position: relative;
+	z-index: 100;
+
+	align-self: end;
+
+	width: 50%;
+	height: 60%;
+	border-radius: 1em;
+
+	rotate: -5deg;
+
+	background-color: rgb(200, 160, 130);
+
+	animation: calc(var(--zwemmenAnimatieSpeed)/2) lijf ease-in-out infinite;
+	animation-play-state: inherit;
+}
+
+
+/* Armen */
+
+/* Bovenarm */
+.arm {
+	position: absolute;
+	right: 10%;
+	top: 20%;
+
+	width: 50%;
+	height: 50%;
+	border-radius: 1em;
+
+	transform-origin: 100% 50%;
+	transform: rotate(45deg);
+
+	background-color: inherit;
+
+	animation: var(--zwemmenAnimatieSpeed) bovenarm infinite ease-in-out;
+	animation-play-state: inherit;
+}
+
+/* Tweede arm */
+.arm:nth-of-type(2) {
+	transform: rotate(210deg);
+
+	filter: brightness(.9);
+
+	animation-delay: calc(var(--zwemmenAnimatieSpeed)/2);
+}
+
+/* Onderarm */
+.arm:before {
+	content: '';
+
+	position: absolute;
+	right: -10%;
+
+	width: 100%;
+	height: 100%;
+	border-radius: 1em;
+
+	transform-origin: 0% 50%;
+	transform: rotate(150deg);
+
+	background-color: inherit;
+
+	animation: onderarm infinite ease-in-out;
+	animation-duration: inherit;
+	animation-delay: inherit;
+	animation-play-state: inherit;
+}
+
+
+/* Benen */
+
+/* Bovenbeen */
+.been {
+	position: absolute;
+
+	left: 10%;
+	top: 20%;
+
+	width: 50%;
+	height: 60%;
+	border-radius: 1em;
+
+	transform-origin: 0% 50%;
+	transform: rotate(170deg);
+
+	background-color: inherit;
+
+	animation: calc(var(--zwemmenAnimatieSpeed)/4) bovenbeen infinite ease-in-out;
+	animation-direction: alternate;
+	animation-play-state: inherit;
+}
+
+/* Tweede been */
+.been:nth-of-type(4) {
+	transform: rotate(190deg);
+
+	filter: brightness(.9);
+
+	animation-direction: alternate-reverse;
+}
+
+/* Onderbeen */
+.been:before {
+	content: '';
+
+	position: absolute;
+	right: 10%;
+
+	width: 100%;
+	height: 100%;
+	border-radius: 1em;
+
+	transform-origin: 100% 50%;
+	transform: rotate(190deg);
+
+	background-color: inherit;
+
+	animation: onderbeen infinite;
+	animation-duration: inherit;
+	animation-direction: inherit;
+	animation-play-state: inherit;
+}
+
+
+/* Animaties voor de zwemmer */
+
+@keyframes lijf {
+	0% {
+		transform: rotate(-5deg);
+	}
+
+	35% {
+		transform: rotate(-10deg);
+	}
+
+	70% {
+		transform: rotate(-5deg);
+	}
+
+	100% {
+		transform: rotate(-5deg);
+	}
+}
+
+@keyframes bovenarm {
+	0% {
+		transform: rotate(-150deg);
+	}
+
+	30% {
+		transform: rotate(-145deg);
+	}
+
+	100% {
+		transform: rotate(210deg);
+	}
+}
+
+@keyframes onderarm {
+	0% {
+		transform: rotate(180deg);
+	}
+
+	30% {
+		transform: rotate(180deg);
+	}
+
+	40% {
+		transform: rotate(210deg);
+	}
+
+	60% {
+		transform: rotate(150deg)
+	}
+
+	80% {
+		transform: rotate(-180deg);
+	}
+
+	100% {
+		transform: rotate(-180deg);
+	}
+}
+
+@keyframes bovenbeen {
+	from {
+		transform: rotate(170deg);
+	}
+
+	to {
+		transform: rotate(190deg);
+	}
+}
+
+@keyframes onderbeen {
+	from {
+		transform: rotate(180deg);
+	}
+
+	to {
+		transform: rotate(200deg);
+	}
+}
+
+@keyframes zwemmen {
+	from {
+		transform: translateX(-250%);
+	}
+
+	to {
+		transform: translateX(250%);
+	}
+}
+
+
+/* plaats svg uit de weg */
+
+svg {
+	position: fixed;
+}
+
+
+
+/* --- DARK MODE --- */
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--haai-kleur: rgb(60, 100, 125);
+		--kaak-onder-kleur: rgb(130, 170, 205);
+		--kaak-boven-kleur: rgb(130, 170, 205);
+		--haai-schaduw: radial-gradient(circle at 50% 40%, transparent 0%, black 70%);
+		--haai-outline: drop-shadow(.5em .5em 1em #fff3) drop-shadow(0 .5em .5em #fff5) drop-shadow(.1em .5em .05em white);
+		--persoon-kleur: rgb(200, 160, 130);
+		--water-gradient: linear-gradient(to bottom, darkred, red);
+		--lucht-kleur: black;
+	}
+}
+
+
+.light-mode {
+	--haai-kleur: rgb(60, 100, 125);
+	--kaak-onder-kleur: rgb(130, 170, 205);
+	--kaak-boven-kleur: rgb(130, 170, 205);
+	--haai-schaduw: radial-gradient(circle at 0% 20%, transparent 30%, black 70%);
+	--haai-outline: drop-shadow(-.5em 0 1em #fff3) drop-shadow(0 0 .5em #fff5) drop-shadow(-.1em 0 .05em white);
+	--persoon-kleur: rgb(200, 160, 130);
+	--water-gradient: linear-gradient(to bottom, rgb(74, 154, 190), rgb(30, 120, 160));
+	--lucht-kleur: white;
+}
+
+.dark-mode {
+	--haai-kleur: rgb(60, 100, 125);
+	--kaak-onder-kleur: rgb(130, 170, 205);
+	--kaak-boven-kleur: rgb(130, 170, 205);
+	--haai-schaduw: radial-gradient(circle at 50% 40%, transparent 0%, black 70%);
+	--haai-outline: drop-shadow(.5em .5em 1em #fff3) drop-shadow(0 .5em .5em #fff5) drop-shadow(.1em .5em .05em white);
+	--persoon-kleur: rgb(200, 160, 130);
+	--water-gradient: linear-gradient(to bottom, darkred, red);
+	--lucht-kleur: black;
+}
