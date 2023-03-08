@@ -305,6 +305,10 @@ button:hover {
 	background-color: black;
 }
 
+.tanden {
+	list-style: none;
+}
+
 /* Tanden */
 
 .tanden.boven {
