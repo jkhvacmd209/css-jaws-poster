@@ -3,7 +3,7 @@
 @font-face {
 	font-family: "Amity Jack";
 	src: local("Amity Jack"),
-		url("../fonts/amity-jack.woff2");
+		url("../fonts/amity-jack.woff2") format("woff2");
 }
 
 
@@ -82,7 +82,7 @@ h1 {
 
 	color: red;
 	font-family: Amity Jack, sans-serif;
-	font-size: min(20vw, 9em);
+	font-size: min(20vmin, 9em);
 	text-align: center;
 	font-weight: bold;
 }
@@ -232,7 +232,7 @@ button:hover {
 	position: absolute;
 	top: 11%;
 
-	width: 1em;
+	width: 2%;
 	aspect-ratio: 2/3;
 	border-radius: 50%;
 
@@ -240,13 +240,13 @@ button:hover {
 }
 
 .oog.links {
-	left: 30%;
+	left: 30.25%;
 
 	rotate: 10deg;
 }
 
 .oog.rechts {
-	right: 30%;
+	right: 30.25%;
 
 	rotate: -10deg;
 }
